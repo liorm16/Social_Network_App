@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:daesh_app/app_screens/main_screen.dart';
+import 'package:daesh_app/app_screens/log_in.dart';
 import 'package:daesh_app/const_data/const.dart';
 
 void main() async {
@@ -10,6 +11,7 @@ void main() async {
 class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
+
 }
 
 class _MyAppState extends State<MyApp> {
@@ -31,7 +33,8 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       title: Constants.appName,
       theme: isDark ? Constants.darkTheme : Constants.lightTheme,
-      home: MainScreen(),
+      home: log_in(),
+
     );
   }
 }
