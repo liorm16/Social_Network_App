@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:daesh_app/widgets/comment.dart';
+import 'package:flutter/material.dart';
 
 class CommentWindow extends StatefulWidget {
   int ownerId;
@@ -24,17 +24,19 @@ class CommentWindow extends StatefulWidget {
 class _CommentWindow extends State<CommentWindow> {
   Duration _duration = Duration(milliseconds: 300);
   List<Comment> commentList;
-  final ownerId;
-  final postId;
+  int ownerId;
+  int postId;
 
   _CommentWindow({this.ownerId, this.postId, this.commentList});
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
+    return GestureDetector(
+        child: Stack(
       children: <Widget>[
-        //ListViewEffect(duration: _duration, children: commentList.map((s) => Comment(s,)).toList())
+
       ],
+        )
     );
   }
 }

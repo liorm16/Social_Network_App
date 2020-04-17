@@ -12,7 +12,7 @@ class Constants {
   static Color darkBG = HexColor("#3f5ca8");
   static Color badgeColor = Colors.red;
 
-  static ThemeData lightTheme = ThemeData(
+  static ThemeData appTheme = ThemeData(
     backgroundColor: lightBG,
     primaryColor: lightPrimary,
     accentColor: lightAccent,
@@ -31,26 +31,6 @@ class Constants {
     ),
   );
 
-  static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    backgroundColor: darkBG,
-    primaryColor: darkPrimary,
-    accentColor: darkAccent,
-    scaffoldBackgroundColor: darkBG,
-    cursorColor: darkAccent,
-    buttonColor: lightBG,
-    buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: lightBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    ),
-  );
 }
 
 class HexColor extends Color {

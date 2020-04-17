@@ -1,217 +1,233 @@
-import 'dart:html';
-import 'package:flutter/material.dart';
-import 'package:daesh_app/const_data/const.dart';
-import 'dart:convert';
-import 'dart:typed_data';
+// ignore: avoid_web_libraries_in_flutter
+//import 'dart:html';
+
 import 'dart:async';
+
+import 'package:daesh_app/app_screens/log_in.dart';
+import 'package:daesh_app/app_screens/main_screen.dart';
+import 'package:daesh_app/widgets/post_button_bar.dart';
+import 'package:daesh_app/widgets/post_header.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'dart:io' as Io;
-import 'package:daesh_app/widgets/comment_Window.dart';
-import 'package:daesh_app/widgets/share_Window.dart';
-import 'package:daesh_app/widgets/comment.dart';
 
 class Post extends StatefulWidget {
-  final String avatar;
-  final String name;
-  final DateTime time;
-
-  //final String img;
+  final String time;
   final String content;
-  final int likes;
   final postId;
   final ownerId;
-  bool isLiked;
+  final currentUserId;
 
-  Post({this.avatar,
-    this.name,
-    this.time,
-    //this.img,
-    this.likes,
-    this.isLiked,
-    this.content,
-    this.postId,
-    this.ownerId});
 
-  factory Post.fromJSON(Map data) {
+  Post(
+      {this.time, this.content, this.postId, this.ownerId, this.currentUserId});
+
+  factory Post.fromJSON(Map<String, dynamic> data, int currentUserId) {
     return Post(
-      name: data['name'],
-      avatar: data['avatar'],
-      //img: data['img'],
-      likes: data['likes'],
-      isLiked: data['isLiked'],
       content: data['content'],
-      time: data['time'],
-      ownerId: data['ownerId'],
-      postId: data['postId'],
+      time: data['createdAt'],
+      ownerId: data['userId'],
+      postId: data['id'],
+      currentUserId: currentUserId,
     );
   }
 
   @override
   _PostState createState() =>
-      _PostState(
-        //img: this.img,
-        avatar: this.avatar,
-        name: this.name,
-        content: this.content,
-        time: this.time,
-        likes: this.likes,
-        isLiked: this.isLiked,
-        ownerId: this.ownerId,
-        postId: this.postId,
-      );
+      _PostState(this.content, this.time, this.postId, this.ownerId,
+          this.currentUserId);
 }
 
 class _PostState extends State<Post> {
-  final String avatar;
+  String content;
+  String time;
+  int postId;
+  int ownerId;
+  PostHeader postHeader;
+  int currentUserId;
 
-  //final String img;
-  final String name;
-  final String content;
-  final DateTime time;
-  int likes;
-  bool isLiked;
-  final int postId;
-  final int ownerId;
+  PostButtonBar btnBar;
 
-  _PostState({ //this.img,
-    this.avatar,
-    this.name,
-    this.content,
-    this.time,
-    this.likes,
-    this.postId,
-    this.isLiked,
-    this.ownerId});
+  _PostState(String content, String time, int postId, int ownerId,
+      int currentUserId) {
+    this.content = content;
+    this.ownerId = ownerId;
+    this.postId = postId;
+    this.time = time;
+    this.postHeader = new PostHeader(time, ownerId);
+    this.btnBar = new PostButtonBar(ownerId, postId);
+    this.currentUserId = currentUserId;
+  }
+
+
+  var _tapPosition;
+
+  void _showCustomMenu() {
+    final RenderBox overlay = Overlay
+        .of(context)
+        .context
+        .findRenderObject();
+
+    showMenu(
+        context: context,
+        items: <PopupMenuEntry<int>>[Entry(currentUserId, postId, ownerId)],
+        position: RelativeRect.fromRect(
+            _tapPosition & Size(40, 40),
+            Offset.zero & overlay.size
+        )
+    )
+        .then<void>((int delta) {
+      if (delta == null) return;
+      setState(() {});
+    });
+  }
+
+  void _storePosition(TapDownDetails details) {
+    _tapPosition = details.globalPosition;
+  }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(0.2),
-      child: Container(
-          child: Row(
-            children: <Widget>[
-              postInfo(context, avatar, time, name, ownerId),
-              Divider(
-                thickness: 0.2,
-                height: 0.3,
+    return Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(0.2),
+            boxShadow: [
+              BoxShadow(
+                color: Theme
+                    .of(context)
+                    .primaryColor,
+                blurRadius: 1.0,
+                spreadRadius: 1.0, // has the effect of extending the shadow
+                offset: Offset(
+                  5.0, // horizontal, move right 10
+                  5.0, // vertical, move down 10
+                ),
               ),
-              postContent(content),
-              createButtonBar(isLiked, likes, ownerId, postId),
-            ],
-          )),
-    );
+            ]),
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(0.2),
+          ),
+          elevation: 10.0,
+          child: InkWell(
+              splashColor: Theme
+                  .of(context)
+                  .primaryColor,
+              onLongPress: _showCustomMenu,
+              onTapDown: _storePosition,
+              onTap: () {
+                Scaffold.of(context).showSnackBar(SnackBar(
+                  content: Text('Itay is GAY'),
+                ));
+              },
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  postHeader,
+                  Divider(
+                    thickness: 1.0,
+                    height: 10.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                  ),
+                  postContent(content),
+                  Divider(
+                    thickness: 1.0,
+                    height: 10.0,
+                    indent: 10.0,
+                    endIndent: 10.0,
+                  ),
+                  btnBar
+                ],
+              )),
+        ));
   }
 
 //////////////////////////////////////////////////////////////////////////////////////////
-  postInfo(BuildContext context, String avatar, DateTime date, String name,
-      int ownerId) {
-    return ListTile(
-      leading: createAvatar(context, avatar, ownerId),
-      title: createName(name),
-      trailing: createTimePosted(date),
-    );
-  }
-
-  createAvatar(BuildContext context, String avatar, int ownerId) {
-    final decodedBytes = base64Decode(avatar);
-    var fileAvatar = Io.File("postAvatar" + ownerId.toString() + ".png");
-    fileAvatar.writeAsBytesSync(decodedBytes);
-    return BoxDecoration(
-        shape: BoxShape.circle,
-        image: DecorationImage(fit: BoxFit.fill, image: FileImage(fileAvatar)));
-  }
-
-  createName(String name) {
-    return Text(name);
-  }
-
-  createTimePosted(DateTime date) {
-    return Text(date.toUtc().toIso8601String());
-  }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
   postContent(String content) {
-    return Text(content);
+    return Text(content, textAlign: TextAlign.center, textScaleFactor: 1.5);
+  }
+}
+
+class Entry extends PopupMenuEntry<int> {
+  int postOwnerId;
+  int currentUserId;
+  int postId;
+  double height = 100;
+
+  Entry(int currentUserId, int postId, int postOwnerId) {
+    this.postOwnerId = postOwnerId;
+    this.currentUserId = currentUserId;
+    this.postId = postId;
   }
 
-  createButtonBar(bool isLiked, int likes, int ownerId, int PostId) {
-    return ButtonBar(
-      alignment: MainAxisAlignment.spaceEvenly,
-      mainAxisSize: MainAxisSize.max,
+  @override
+  EntryState createState() =>
+      EntryState(this.currentUserId, this.postId, this.postOwnerId);
+
+  @override
+  bool represents(int value) {
+    // TODO: implement represents
+    return false;
+  }
+
+
+}
+
+class EntryState extends State<Entry> {
+  int currentUserId;
+  int postId;
+  int postOwnerId;
+
+  EntryState(int currentUserId, int postId, int postOwnerId) {
+    this.postOwnerId = postOwnerId;
+    this.currentUserId = currentUserId;
+    this.postId = postId;
+  }
+
+  Future<void> deletePost() async {
+    var res = await http.delete(serverip + "/posts/" + postId.toString());
+    if (res.statusCode == 200) {
+
+    } else if (res.statusCode == 400) {
+      displayDialog(context, res.body, "");
+    } else {
+      print('else');
+    }
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (BuildContext context) {
+      return MainScreen();
+    }));
+  }
+
+  void _minus1() {
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (postOwnerId == currentUserId) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        createLikeButton(isLiked, likes, ownerId, postId),
-        createCommentButton(),
-        createShareButton(),
+        Expanded(
+            child: FlatButton(onPressed: deletePost, child: Text('Delete'))),
+        Expanded(child: FlatButton(onPressed: _minus1, child: Text('Update'))),
       ],
     );
-  }
-
-  createLikeButton(bool isLiked, int likes, int ownerId, int postId) {
-    Icon like;
-    if (isLiked) {
-      like = Icon(Icons.favorite);
     } else {
-      like = Icon(Icons.favorite_border);
-    }
-    return GestureDetector(
-        onTap: () {
-          setState(() {
-            likePress(isLiked, ownerId, postId, like);
-          });
-        },
-        child: Container(
-            child: Row(children: <Widget>[
-              IconButton(
-                icon: like,
-                color: Theme
-                    .of(context)
-                    .accentColor,
-                onPressed: () {},
-              ),
-              Text(likes.toString())
-            ])));
-  }
-
-  likePress(bool isLiked, int ownerId, int postId, Icon like) async {
-    final http.Response response = await http.post("url/like/user_id=:" +
-        ownerId.toString() +
-        "&post_id=:" +
-        postId.toString());
-    if (response.body == "Created") {
-      isLiked = true;
-      like = Icon(Icons.favorite);
-    } else if (response.body == "OK") {
-      isLiked = false;
-      like = Icon(Icons.favorite_border);
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(child: FlatButton(onPressed: () {
+            setState(() {
+              deletePost();
+            });
+          }, child: Text('info'))),
+          Expanded(child: FlatButton(onPressed: _minus1, child: Text(''))),
+        ],
+      );
     }
   }
-
-  createCommentButton() {
-    return GestureDetector(
-      onTap: openCommentWindow(ownerId, postId),
-      child: Icon(Icons.comment),
-    );
-  }
-
-  openCommentWindow(int ownerId, int postId) {
-    CommentWindow(ownerId, postId, createCommentList(ownerId, postId));
-  }
-
-  createCommentList(int ownerId, int postId) {
-    List <Comment> commentList = [Comment("lol", "123", "23")];
-  }
-
-  createShareButton() {
-    return GestureDetector(
-      onTap: openShareWindow(ownerId, postId),
-      child: Icon(Icons.share),
-    );
-  }
-
-  openShareWindow(int ownerId, int postId) {
-    ShareWindow();
-  }
-
-
 }
