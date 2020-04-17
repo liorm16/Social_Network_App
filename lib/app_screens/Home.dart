@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:daesh_app/widgets/post.dart';
@@ -34,7 +35,7 @@ class _HomeState extends State<Home> {
             return Scaffold(
               backgroundColor: Theme
                   .of(context)
-                  .primaryColor,
+                  .backgroundColor,
               appBar: AppBar(
                 actions: <Widget>[
                   IconButton(
@@ -48,7 +49,7 @@ class _HomeState extends State<Home> {
                     },
                     color: Theme
                         .of(context)
-                        .backgroundColor,
+                        .buttonColor,
                     splashColor: Theme
                         .of(context)
                         .primaryColor,
@@ -56,7 +57,7 @@ class _HomeState extends State<Home> {
                 ],
                 backgroundColor: Theme
                     .of(context)
-                    .primaryColor,
+                    .backgroundColor,
                 bottom: PreferredSize(
                     child: Container(color: Colors.black, height: 1.0,),
                     preferredSize: Size.fromHeight(4.0)),
@@ -69,7 +70,7 @@ class _HomeState extends State<Home> {
               body: setPostFeed(snapshot.data),
             );
           } else {
-            return log_in();
+            //return log_in();
           }
         });
   }

@@ -40,12 +40,16 @@ class _PostFormState extends State<PostForm> {
           if (snapshot.data != "") {
             return SafeArea(
                 child: Scaffold(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: Theme
+                        .of(context)
+                        .backgroundColor,
                     body: Center(
                         child: Container(
                             decoration: BoxDecoration(boxShadow: [
                               BoxShadow(
-                                color: Theme.of(context).primaryColor,
+                                color: Theme
+                                    .of(context)
+                                    .backgroundColor,
                                 blurRadius: 5.0,
                                 spreadRadius: 5.0,
                                 // has the effect of extending the shadow
@@ -57,7 +61,9 @@ class _PostFormState extends State<PostForm> {
                             ]),
                             child: Card(
                                 elevation: 10.0,
-                                color: Theme.of(context).backgroundColor,
+                                color: Theme
+                                    .of(context)
+                                    .cardColor,
                                 child: Form(
                                     key: _formKey,
                                     child: Column(
@@ -73,7 +79,7 @@ class _PostFormState extends State<PostForm> {
                                           trailing: RaisedButton(
                                               child: Icon(Icons.arrow_forward),
                                               color: Theme.of(context)
-                                                  .backgroundColor,
+                                                  .buttonColor,
                                               shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       new BorderRadius.circular(
@@ -103,7 +109,7 @@ class _PostFormState extends State<PostForm> {
                                         RaisedButton(
                                             child: Icon(Icons.send),
                                             color: Theme.of(context)
-                                                .backgroundColor,
+                                                .buttonColor,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
                                                     new BorderRadius.circular(

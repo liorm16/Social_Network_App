@@ -74,7 +74,7 @@ class _MainScreenState extends State<MainScreen> {
                 child: Icon(Icons.add),
                 backgroundColor: Theme
                     .of(context)
-                    .backgroundColor,
+                    .buttonColor,
                 onPressed: () {
                   Navigator.pushReplacement(
                       context,
@@ -91,11 +91,8 @@ class _MainScreenState extends State<MainScreen> {
                   // sets the background color of the `BottomNavigationBar`
                   canvasColor: Theme
                       .of(context)
-                      .primaryColor,
-                  // sets the active color of the `BottomNavigationBar` if `Brightness` is light
-                  primaryColor: Theme
-                      .of(context)
-                      .accentColor,
+                      .backgroundColor,
+
                   textTheme: Theme
                       .of(context)
                       .textTheme
@@ -129,7 +126,7 @@ class _MainScreenState extends State<MainScreen> {
                   onTap: navigationTapped,
                   selectedItemColor: Theme
                       .of(context)
-                      .backgroundColor,
+                      .buttonColor,
                   currentIndex: _page,
                 ),
               ),

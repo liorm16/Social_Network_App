@@ -34,7 +34,7 @@ class _log_in_State extends State<log_in> {
     return Scaffold(
         backgroundColor: Theme
             .of(context)
-            .primaryColor,
+            .backgroundColor,
         resizeToAvoidBottomInset: true,
         body: Center(child:
         SafeArea(
@@ -112,7 +112,9 @@ class _log_in_State extends State<log_in> {
                               "No account was found matching that username and password");
                         }
                       },
-                      color: Theme.of(context).backgroundColor,
+                      color: Theme
+                          .of(context)
+                          .buttonColor,
                       shape: RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(1.0))),
                   Text(''),

@@ -5,8 +5,6 @@ import 'package:daesh_app/widgets/comment.dart';
 import 'package:daesh_app/widgets/share_Window.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
-import 'comment_Window.dart';
 // ignore: must_be_immutable
 
 class PostButtonBar extends StatefulWidget {
@@ -92,7 +90,9 @@ class _PostButtonBarState extends State<PostButtonBar> {
   createLikeButton(int ownerId, int postId) {
     return IconButton(
       icon: returnLikeIcon(),
-      color: Theme.of(context).accentColor,
+      color: Theme
+          .of(context)
+          .buttonColor,
       onPressed: () {
         if (this.mounted) {
           Future lol = likePress(ownerId, postId);
@@ -130,9 +130,13 @@ class _PostButtonBarState extends State<PostButtonBar> {
 
   returnLikeIcon() {
     if (isLiked) {
-      return Icon(Icons.favorite, color: Theme.of(context).primaryColor);
+      return Icon(Icons.favorite, color: Theme
+          .of(context)
+          .buttonColor);
     } else {
-      return Icon(Icons.favorite_border, color: Theme.of(context).primaryColor);
+      return Icon(Icons.favorite_border, color: Theme
+          .of(context)
+          .buttonColor);
     }
   }
 
@@ -144,7 +148,6 @@ class _PostButtonBarState extends State<PostButtonBar> {
   }
 
   openCommentWindow(int ownerId, int postId) {
-    CommentWindow(ownerId, postId, createCommentList(ownerId, postId));
   }
 
   createCommentList(int ownerId, int postId) {

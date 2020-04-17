@@ -21,7 +21,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  bool isDark = false;
+  bool isDark = true;
 
   Future<String> get jwtOrEmpty async {
     var jwt = await storage.read(key: "jwt");
@@ -42,8 +42,8 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-      statusBarColor: isDark ? Constants.darkPrimary : Constants.lightPrimary,
-      statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
+      statusBarColor: Constants.darkPrimary,
+      statusBarIconBrightness: Brightness.dark,
     ));
   }
 

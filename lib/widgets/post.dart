@@ -89,23 +89,29 @@ class _PostState extends State<Post> {
   Widget build(BuildContext context) {
     return Container(
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(0.2),
+            color: Theme
+                .of(context)
+                .backgroundColor,
+            borderRadius: BorderRadius.circular(1.5),
             boxShadow: [
               BoxShadow(
                 color: Theme
                     .of(context)
-                    .primaryColor,
-                blurRadius: 1.0,
-                spreadRadius: 1.0, // has the effect of extending the shadow
+                    .backgroundColor,
+                blurRadius: 3.0,
+                spreadRadius: 3.0, // has the effect of extending the shadow
                 offset: Offset(
-                  5.0, // horizontal, move right 10
-                  5.0, // vertical, move down 10
+                  4.0, // horizontal, move right 10
+                  4.0, // vertical, move down 10
                 ),
               ),
             ]),
         child: Card(
+          color: Theme
+              .of(context)
+              .cardColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(0.2),
+            borderRadius: BorderRadius.circular(1.5),
           ),
           elevation: 10.0,
           child: InkWell(
@@ -115,9 +121,7 @@ class _PostState extends State<Post> {
               onLongPress: _showCustomMenu,
               onTapDown: _storePosition,
               onTap: () {
-                Scaffold.of(context).showSnackBar(SnackBar(
-                  content: Text('Itay is GAY'),
-                ));
+
               },
               child: Column(
                 mainAxisSize: MainAxisSize.min,

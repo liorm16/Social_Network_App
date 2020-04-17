@@ -4,31 +4,24 @@ class Constants {
   static String appName = "Social app";
 
   //Colors for theme
-  static Color lightPrimary = HexColor("#7289da");
-  static Color darkPrimary = HexColor("#23272a");
-  static Color lightAccent = HexColor("#99aab5");
-  static Color darkAccent = HexColor("#2c2f33");
-  static Color lightBG = Colors.white;
-  static Color darkBG = HexColor("#3f5ca8");
-  static Color badgeColor = Colors.red;
+  static Color primary = HexColor("#23272a");
+  static Color lightPrimary = Colors.white;
+  static Color darkPrimary = HexColor("#2F313623272a");
+  static Color accent = HexColor("#32353B");
+  static Color card = Colors.white;
+  static Color background = HexColor("#36393F");
+  static Color buttonColor = HexColor("#7289da");
 
   static ThemeData appTheme = ThemeData(
-    backgroundColor: lightBG,
-    primaryColor: lightPrimary,
-    accentColor: lightAccent,
-    cursorColor: lightAccent,
-    scaffoldBackgroundColor: lightBG,
-    buttonColor: lightBG,
-    appBarTheme: AppBarTheme(
-      elevation: 0,
-      textTheme: TextTheme(
-        title: TextStyle(
-          color: darkBG,
-          fontSize: 18.0,
-          fontWeight: FontWeight.w800,
-        ),
-      ),
-    ),
+    backgroundColor: background,
+    primaryColor: primary,
+    primaryColorDark: darkPrimary,
+    primaryColorLight: lightPrimary,
+    accentColor: accent,
+    cardColor: card,
+    cursorColor: accent,
+    scaffoldBackgroundColor: background,
+    buttonColor: buttonColor,
   );
 
 }
